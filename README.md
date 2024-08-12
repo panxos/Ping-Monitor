@@ -1,4 +1,4 @@
-# 🌐 Ping-Monitor: Monitoreo de Red con Sistema de Semáforo
+# 🌐 Ping-Monitor: Monitor de Red con Sistema de Semáforo
 
 <p align="center">
   <img src="https://raw.githubusercontent.com/panxos/ConfServerDebian/main/panxos_logo.png" alt="Logo" width="200" height="200">
@@ -6,35 +6,26 @@
 
 ## 📊 Descripción
 
-Ping-Monitor es una herramienta de línea de comandos desarrollada por Francisco Aravena (P4nx0z) para monitorear la latencia de red en tiempo real. Utiliza un sistema de semáforo visual en la consola del servidor y ofrece notificaciones selectivas vía Telegram.
+Ping-Monitor es una herramienta de línea de comandos desarrollada por Francisco Aravena (P4nx0z) para monitorear la latencia de red en tiempo real. Utiliza un sistema de semáforo visual para indicar el estado de la conexión y está disponible en dos versiones:
+
+- 🔹 **Versión Básica**: Monitoreo simple y efectivo
+- 🔷 **Versión Pro con Telegram**: Incluye notificaciones vía Telegram
 
 ## 🌟 Características
 
-- Sistema de Semáforo visual en consola
+- Sistema de Semáforo visual (Verde, Amarillo, Rojo)
 - Monitoreo continuo de latencia
-- Notificaciones selectivas vía Telegram (versión Pro)
-- Configuración cifrada y guardado de configuraciones
+- Estadísticas detalladas
+- Logging opcional a archivo
+- Configuración guardable y cifrada
+- Notificaciones Telegram (versión Pro)
 
-## 🖥️ Compatibilidad
+## 🖥️ Requisitos
 
-- Windows
-- macOS
-- Linux (incluyendo Debian)
+- Python 3.6+
+- pip (gestor de paquetes de Python)
 
 ## 📦 Instalación
-
-### Preparación del Entorno (Especialmente para Debian)
-
-Debido a las políticas de gestión de paquetes en Debian, se recomienda usar un entorno virtual:
-
-```bash
-sudo apt update
-sudo apt install python3-venv
-python3 -m venv ping_monitor_env
-source ping_monitor_env/bin/activate
-```
-
-### Instalación de Dependencias
 
 1. Clona el repositorio:
    ```bash
@@ -43,12 +34,23 @@ source ping_monitor_env/bin/activate
    ```
 
 2. Instala las dependencias:
-   ```bash
-   pip install -r requirements.txt
-   ```
+   - Para la versión básica:
+     ```bash
+     pip install -r requirements_basic.txt
+     ```
+   - Para la versión Pro con Telegram:
+     ```bash
+     pip install -r requirements.txt
+     ```
 
 ## 💻 Uso
 
+### Versión Básica
+```bash
+python ping-monitor-script.py [host] [opciones]
+```
+
+### Versión Pro con Telegram
 ```bash
 python ping-monitor-script-telegram.py [host] [opciones]
 ```
@@ -58,61 +60,66 @@ python ping-monitor-script-telegram.py [host] [opciones]
 | Opción | Descripción | Valor por Defecto |
 |--------|-------------|-------------------|
 | `host` | IP o hostname a monitorear | (Requerido) |
-| `--log` | Archivo de registro | network_monitor.log |
-| `--interval` | Intervalo entre pings (seg) | 1 |
-| `--yellow` | Umbral amarillo (ms) | 100 |
-| `--red` | Umbral rojo (ms) | 300 |
-| `--telegram_token` | Token del bot de Telegram | |
-| `--telegram_chat_id` | ID del chat de Telegram | |
-| `--save_config` | Guardar la configuración actual | |
+| `--log` | Archivo de registro (opcional) | None |
+| `--interval` | Intervalo entre pings (segundos) | 1 |
+| `--yellow` | Umbral para semáforo amarillo (ms) | 100 |
+| `--red` | Umbral para semáforo rojo (ms) | 300 |
+| `--telegram_token` | Token del bot de Telegram | None |
+| `--telegram_chat_id` | Chat ID de Telegram | None |
+| `--save_config` | Guardar la configuración actual | False |
 
-## 💾 Guardado y Uso de Configuración
+## 📊 Ejemplos de Uso
 
-Para guardar la configuración:
+1. Monitoreo básico:
+   ```bash
+   python ping-monitor-script.py 8.8.8.8
+   ```
 
-```bash
-python ping-monitor-script-telegram.py 8.8.8.8 --telegram_token YOUR_TOKEN --telegram_chat_id YOUR_CHAT_ID --save_config
+2. Con logging y umbrales personalizados:
+   ```bash
+   python ping-monitor-script.py 8.8.8.8 --log ping_log.json --yellow 150 --red 400
+   ```
+
+3. Versión Pro con notificaciones Telegram:
+   ```bash
+   python ping-monitor-script-telegram.py 8.8.8.8 --telegram_token YOUR_TOKEN --telegram_chat_id YOUR_CHAT_ID --save_config
+   ```
+
+## 📄 Ejemplo de Salida de Log
+
+Cuando se usa la opción `--log`, el archivo de log tendrá un formato JSON similar a este:
+
+```json
+{"timestamp": "2024-08-12T18:30:15.123456", "host": "8.8.8.8", "latency": 25.4}
+{"timestamp": "2024-08-12T18:30:16.234567", "host": "8.8.8.8", "latency": 30.2}
+{"timestamp": "2024-08-12T18:30:17.345678", "host": "8.8.8.8", "latency": 28.7}
 ```
 
-Para usar la configuración guardada:
-
-```bash
-python ping-monitor-script-telegram.py 8.8.8.8
-```
-
-## 🎨 Visualización y Notificaciones
-
-- **Consola**: Muestra constantemente el estado de la latencia con colores.
-- **Telegram**: Envía notificaciones solo en los siguientes casos:
-  1. Al iniciar el monitoreo
-  2. Cuando se supera un umbral (amarillo o rojo)
-  3. Cuando la latencia se recupera a verde
-
-## 🚦 Interpretación de Colores
+## 🎨 Interpretación de Colores
 
 - 🟢 **Verde**: Latencia normal (por debajo del umbral amarillo)
 - 🟡 **Amarillo**: Latencia media (entre umbral amarillo y rojo)
 - 🔴 **Rojo**: Latencia crítica (por encima del umbral rojo)
 
-## 🔔 Configuración de Telegram
+## 🔔 Configuración de Telegram (Versión Pro)
 
-1. Crea un bot de Telegram con @BotFather
+1. Crea un bot de Telegram con @BotFather y obtén el token.
 2. Obtén tu Chat ID:
-   - Envía un mensaje a tu bot
+   - Envía un mensaje a tu bot.
    - Visita: `https://api.telegram.org/botTU_TOKEN/getUpdates`
-   - Busca el "chat":{"id":XXXXXXXX} en la respuesta
+   - Busca el "chat":{"id":XXXXXXXX} en la respuesta.
 
 ## 🛠️ Solución de Problemas
 
-### Error en Debian: "externally-managed-environment"
-
-Si encuentras este error, usa el entorno virtual como se describe en la sección de instalación.
+- **Error de módulo no encontrado**: Asegúrate de haber instalado todas las dependencias.
+- **Problemas de permisos**: Verifica que tienes permisos para ejecutar ping en tu sistema.
+- **Errores de Telegram**: Comprueba que el token y el chat ID son correctos.
 
 ## 📝 Notas Adicionales
 
-- Para salir del script, presiona Ctrl+C. Se mostrarán las estadísticas finales.
-- La configuración de Telegram se guarda de forma segura y cifrada.
-- Asegúrate de tener permisos adecuados para ejecutar pings en tu sistema.
+- Para detener el monitoreo, usa Ctrl+C.
+- La configuración se guarda cifrada para mayor seguridad.
+- Los logs en formato JSON facilitan la integración con herramientas de análisis.
 
 ## 🤝 Contribuciones
 
