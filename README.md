@@ -1,4 +1,4 @@
-# 🌐 Ping-Monitor con Sistema de Semáforo
+# 🌐 Ping-Monitor: Monitoreo de Red con Sistema de Semáforo
 
 <p align="center">
   <img src="https://raw.githubusercontent.com/panxos/ConfServerDebian/main/panxos_logo.png" alt="Logo" width="200" height="200">
@@ -6,7 +6,7 @@
 
 ## 📊 Descripción
 
-Ping-Monitor es un script de Python que proporciona un monitor de red en tiempo real con un sistema de semáforo visual. Diseñado por Francisco Aravena (P4nx0z) para administradores de sistemas y entusiastas de la red, este monitor ofrece una forma sencilla y efectiva de vigilar la latencia de red y detectar problemas de conectividad.
+Ping-Monitor es una herramienta de línea de comandos desarrollada por Francisco Aravena (P4nx0z) para monitorear la latencia de red en tiempo real. Utiliza un sistema de semáforo visual para indicar el estado de la conexión y ofrece la opción de enviar notificaciones a través de Telegram.
 
 ## 🌟 Características
 
@@ -16,34 +16,22 @@ Ping-Monitor es un script de Python que proporciona un monitor de red en tiempo 
 - **Registro de Eventos**: Guarda los cambios significativos en un archivo de log.
 - **Estadísticas Finales**: Muestra un resumen estadístico al finalizar el monitoreo.
 - **Traceroute Opcional**: Capacidad de ejecutar un traceroute al finalizar el monitoreo.
+- **Notificaciones Telegram** (versión avanzada): Envía alertas a través de Telegram.
 
 ## 🖥️ Compatibilidad
 
-Ping-Monitor es compatible con los siguientes sistemas operativos:
 - Windows
 - macOS
 - Linux
 
 ## 📚 Dependencias
 
-Ping-Monitor utiliza las siguientes bibliotecas de Python:
-- `subprocess`
-- `re`
-- `sys`
-- `time`
-- `platform`
-- `argparse`
-- `datetime`
-- `statistics`
-- `signal`
+- Python 3.6+
+- Para la versión con Telegram: `python-telegram-bot`
 
-Todas estas bibliotecas son parte de la biblioteca estándar de Python, por lo que no se requiere instalación adicional.
+## 🚀 Instalación
 
-## 🚀 Instalación y Uso
-
-### Opción 1: Clonar el repositorio
-
-1. Clona este repositorio:
+1. Clona el repositorio:
    ```
    git clone https://github.com/panxos/Ping-Monitor.git
    ```
@@ -51,22 +39,26 @@ Todas estas bibliotecas son parte de la biblioteca estándar de Python, por lo q
    ```
    cd Ping-Monitor
    ```
-3. Ejecuta el script:
+3. (Opcional) Para la versión con Telegram, instala la dependencia:
    ```
-   python ping-monitor-script.py [host] [opciones]
+   pip install python-telegram-bot
    ```
 
-### Opción 2: Ejecución al vuelo
+## 💻 Uso
 
-Puedes ejecutar el script directamente sin clonar el repositorio usando `curl` y `python`:
+### Versión Básica
 
-```bash
-curl -s https://raw.githubusercontent.com/panxos/Ping-Monitor/main/ping-monitor-script.py | python - [host] [opciones]
+```
+python ping-monitor-script.py [host] [opciones]
 ```
 
-Nota: Asegúrate de tener `curl` instalado en tu sistema para usar esta opción.
+### Versión con Telegram
 
-### Opciones:
+```
+python ping-monitor-script-telegram.py [host] [opciones]
+```
+
+### Opciones Comunes:
 
 - `host`: Dirección IP o nombre de host a monitorear (obligatorio)
 - `--log`: Nombre del archivo de registro (por defecto: "network_monitor.log")
@@ -75,35 +67,49 @@ Nota: Asegúrate de tener `curl` instalado en tu sistema para usar esta opción.
 - `--red`: Umbral para la alerta roja en ms (por defecto: 300)
 - `--tracer`: Ejecutar traceroute al finalizar el monitoreo
 
-### Ejemplo:
+### Opciones Adicionales para la Versión con Telegram:
 
+- `--telegram_token`: Token del bot de Telegram
+- `--telegram_chat_id`: ID del chat de Telegram para recibir notificaciones
+
+## 🔧 Configuración de Telegram (para la versión avanzada)
+
+1. Crea un bot de Telegram con @BotFather y obtén el token.
+2. Obtén tu Chat ID:
+   - Envía un mensaje a tu bot.
+   - Visita: `https://api.telegram.org/botTU_TOKEN/getUpdates`
+   - Busca el "chat":{"id":XXXXXXXX} en la respuesta.
+3. Usa el token y el chat ID como argumentos al ejecutar el script.
+
+## 📊 Interpretación de Resultados
+
+- **Verde**: Latencia normal (< 100 ms por defecto)
+- **Amarillo**: Latencia media (100-300 ms por defecto)
+- **Rojo**: Latencia crítica (> 300 ms por defecto)
+
+## 📝 Ejemplos de Uso
+
+### Versión Básica:
 ```
-python ping-monitor-script.py 8.8.8.8 --log mi_monitoreo.log --interval 2 --yellow 150 --red 400 --tracer
+python ping-monitor-script.py 8.8.8.8 --interval 2 --yellow 150 --red 400
 ```
 
-## 📈 Interpretación de Resultados
-
-- **Verde**: Latencia normal (por debajo del umbral amarillo)
-- **Amarillo**: Latencia media (entre el umbral amarillo y rojo)
-- **Rojo**: Latencia crítica (por encima del umbral rojo)
-
-El script emitirá un sonido cuando la latencia alcance el nivel rojo.
+### Versión con Telegram:
+```
+python ping-monitor-script-telegram.py 8.8.8.8 --telegram_token YOUR_TOKEN --telegram_chat_id YOUR_CHAT_ID
+```
 
 ## 🛠️ Personalización
 
-Puedes ajustar los umbrales de latencia y el intervalo de ping según tus necesidades específicas utilizando las opciones de línea de comandos.
+Ajusta los umbrales de latencia y el intervalo de ping según tus necesidades usando las opciones de línea de comandos.
 
-## 📝 Registro
+## 🚪 Finalizar el Monitoreo
 
-El script genera un archivo de log que registra los cambios significativos en la latencia. Esto es útil para el análisis posterior y la detección de patrones a largo plazo.
-
-## 🚪 Salida
-
-Para detener el monitoreo, presiona `Ctrl+C`. El script mostrará un resumen estadístico y, si se especificó la opción `--tracer`, ejecutará un traceroute final.
+Presiona `Ctrl+C` para detener el monitoreo. Se mostrará un resumen estadístico y, si se especificó, se ejecutará un traceroute.
 
 ## 🤝 Contribuciones
 
-Las contribuciones son bienvenidas. Si tienes ideas para mejorar Ping-Monitor, no dudes en abrir un issue o enviar un pull request.
+¡Las contribuciones son bienvenidas! Si tienes ideas para mejorar Ping-Monitor, no dudes en abrir un issue o enviar un pull request.
 
 ## 📜 Licencia
 
