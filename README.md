@@ -6,22 +6,13 @@
 
 ## 📊 Descripción
 
-Ping-Monitor es una herramienta de línea de comandos desarrollada por Francisco Aravena (P4nx0z) para monitorear la latencia de red en tiempo real. Utiliza un sistema de semáforo visual para indicar el estado de la conexión y está disponible en dos versiones:
-
-- 🔹 **Versión Básica**: Monitoreo simple y efectivo
-- 🔷 **Versión Pro con Telegram**: Notificaciones avanzadas + Monitoreo de recursos del sistema
+Ping-Monitor es una herramienta de línea de comandos desarrollada por Francisco Aravena (P4nx0z) para monitorear la latencia de red en tiempo real. Utiliza un sistema de semáforo visual en la consola del servidor y ofrece notificaciones selectivas vía Telegram.
 
 ## 🌟 Características
 
-### Versión Básica
-- Sistema de Semáforo visual
+- Sistema de Semáforo visual en consola
 - Monitoreo continuo de latencia
-- Registro de eventos
-- Estadísticas de latencia
-
-### Versión Pro (Incluye todo lo anterior más)
-- Notificaciones vía Telegram
-- Monitoreo de recursos del sistema (CPU, Memoria, Disco)
+- Notificaciones selectivas vía Telegram (versión Pro)
 - Configuración cifrada y guardado de configuraciones
 
 ## 🖥️ Compatibilidad
@@ -52,30 +43,17 @@ source ping_monitor_env/bin/activate
    ```
 
 2. Instala las dependencias:
-   - Para la versión básica:
-     ```bash
-     pip install -r requirements_basic.txt
-     ```
-   - Para la versión Pro con Telegram:
-     ```bash
-     pip install -r requirements.txt
-     ```
+   ```bash
+   pip install -r requirements.txt
+   ```
 
 ## 💻 Uso
 
-### Versión Básica
-```bash
-python ping-monitor-script.py [host] [opciones]
-```
-
-### Versión Pro con Telegram
 ```bash
 python ping-monitor-script-telegram.py [host] [opciones]
 ```
 
 ## 🔧 Opciones Disponibles
-
-### Opciones Comunes
 
 | Opción | Descripción | Valor por Defecto |
 |--------|-------------|-------------------|
@@ -84,65 +62,39 @@ python ping-monitor-script-telegram.py [host] [opciones]
 | `--interval` | Intervalo entre pings (seg) | 1 |
 | `--yellow` | Umbral amarillo (ms) | 100 |
 | `--red` | Umbral rojo (ms) | 300 |
+| `--telegram_token` | Token del bot de Telegram | |
+| `--telegram_chat_id` | ID del chat de Telegram | |
+| `--save_config` | Guardar la configuración actual | |
 
-### Opciones Adicionales (Versión Pro)
+## 💾 Guardado y Uso de Configuración
 
-| Opción | Descripción |
-|--------|-------------|
-| `--telegram_token` | Token del bot de Telegram |
-| `--telegram_chat_id` | ID del chat de Telegram |
-| `--save_config` | Guardar la configuración actual en un archivo |
-
-## 💾 Guardado y Uso de Configuración (Versión Pro)
-
-La versión Pro permite guardar y cargar configuraciones, facilitando el uso repetido sin tener que ingresar el token de Telegram y el chat ID cada vez.
-
-### Guardando la Configuración
+Para guardar la configuración:
 
 ```bash
 python ping-monitor-script-telegram.py 8.8.8.8 --telegram_token YOUR_TOKEN --telegram_chat_id YOUR_CHAT_ID --save_config
 ```
 
-Esto crea un archivo `config.json` cifrado en el directorio del script.
-
-### Usando la Configuración Guardada
-
-Una vez guardada la configuración, ejecuta el script sin especificar el token y el chat ID:
+Para usar la configuración guardada:
 
 ```bash
 python ping-monitor-script-telegram.py 8.8.8.8
 ```
 
-### Actualizando la Configuración
+## 🎨 Visualización y Notificaciones
 
-Para actualizar, ejecuta el script con los nuevos valores y la opción `--save_config`.
+- **Consola**: Muestra constantemente el estado de la latencia con colores.
+- **Telegram**: Envía notificaciones solo en los siguientes casos:
+  1. Al iniciar el monitoreo
+  2. Cuando se supera un umbral (amarillo o rojo)
+  3. Cuando la latencia se recupera a verde
 
-### Seguridad
-
-- La configuración se guarda cifrada para proteger tu token de Telegram.
-- La clave de cifrado se almacena en `encryption_key.key`. Mantén este archivo seguro.
-
-**Nota**: Ten cuidado con los archivos de configuración y la clave de cifrado en entornos compartidos.
-
-## 📊 Ejemplos de Uso
-
-### Versión Básica
-```bash
-python ping-monitor-script.py 8.8.8.8 --interval 2 --yellow 150 --red 400
-```
-
-### Versión Pro con Telegram
-```bash
-python ping-monitor-script-telegram.py 8.8.8.8 --telegram_token YOUR_TOKEN --telegram_chat_id YOUR_CHAT_ID --save_config
-```
-
-## 🎨 Interpretación de Colores
+## 🚦 Interpretación de Colores
 
 - 🟢 **Verde**: Latencia normal (por debajo del umbral amarillo)
 - 🟡 **Amarillo**: Latencia media (entre umbral amarillo y rojo)
 - 🔴 **Rojo**: Latencia crítica (por encima del umbral rojo)
 
-## 🔔 Configuración de Telegram (Versión Pro)
+## 🔔 Configuración de Telegram
 
 1. Crea un bot de Telegram con @BotFather
 2. Obtén tu Chat ID:
@@ -159,7 +111,7 @@ Si encuentras este error, usa el entorno virtual como se describe en la sección
 ## 📝 Notas Adicionales
 
 - Para salir del script, presiona Ctrl+C. Se mostrarán las estadísticas finales.
-- La versión Pro guarda la configuración de Telegram de forma segura y cifrada.
+- La configuración de Telegram se guarda de forma segura y cifrada.
 - Asegúrate de tener permisos adecuados para ejecutar pings en tu sistema.
 
 ## 🤝 Contribuciones
