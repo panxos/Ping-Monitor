@@ -1,0 +1,2 @@
+# No se requieren dependencias externas para la versión básica
+# Todas las bibliotecas utilizadas son parte de la biblioteca estándar de Python
