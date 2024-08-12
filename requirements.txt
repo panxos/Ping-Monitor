@@ -1,3 +1,18 @@
+# Dependencias principales
 python-telegram-bot==13.7
-psutil==5.8.0
 cryptography==3.4.7
+
+# Dependencias secundarias y sus versiones específicas
+pytz==2021.1
+tornado>=6.1
+APScheduler==3.6.3
+certifi==2021.5.30
+cffi==1.14.6
+pycparser==2.20
+six==1.16.0
+
+# Otras bibliotecas útiles que podrían ser necesarias
+requests==2.26.0
+urllib3==1.26.6
+idna==3.2
+chardet==4.0.0
