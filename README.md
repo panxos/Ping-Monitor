@@ -25,25 +25,107 @@ Ping-Monitor es una herramienta de línea de comandos desarrollada por Francisco
 - Python 3.6+
 - pip (gestor de paquetes de Python)
 
+### Dependencias
+
+- **Versión Básica**:
+  - `subprocess`
+  - `re`
+  - `sys`
+  - `time`
+  - `platform`
+  - `argparse`
+  - `datetime`
+  - `statistics`
+  - `signal`
+  - `json`
+  - `logging`
+
+- **Versión Pro (adicionales)**:
+  - `python-telegram-bot`
+  - `cryptography`
+
 ## 📦 Instalación
 
-1. Clona el repositorio:
+### Debian/Ubuntu
+
+1. Actualiza e instala las dependencias del sistema:
+   ```bash
+   sudo apt update
+   sudo apt install python3-venv python3-pip
+   ```
+
+2. Clona el repositorio:
    ```bash
    git clone https://github.com/panxos/Ping-Monitor.git
    cd Ping-Monitor
    ```
 
-2. Instala las dependencias:
-   - Para la versión básica:
-     ```bash
-     pip install -r requirements_basic.txt
-     ```
-   - Para la versión Pro con Telegram:
-     ```bash
-     pip install -r requirements.txt
-     ```
+3. Crea y activa un entorno virtual:
+   ```bash
+   python3 -m venv ping_monitor_env
+   source ping_monitor_env/bin/activate
+   ```
+
+4. Instala las dependencias:
+   ```bash
+   pip install -r requirements.txt  # Para la versión Pro
+   # O
+   pip install -r requirements_basic.txt  # Para la versión básica
+   ```
+
+### Arch Linux
+
+1. Instala Python y pip:
+   ```bash
+   sudo pacman -S python python-pip
+   ```
+
+2. Sigue los pasos 2-4 de la instalación para Debian/Ubuntu.
+
+### Red Hat/Fedora
+
+1. Instala Python y pip:
+   ```bash
+   sudo dnf install python3 python3-pip
+   ```
+
+2. Sigue los pasos 2-4 de la instalación para Debian/Ubuntu.
+
+### macOS
+
+1. Instala Homebrew si no lo tienes:
+   ```bash
+   /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+   ```
+
+2. Instala Python:
+   ```bash
+   brew install python
+   ```
+
+3. Sigue los pasos 2-4 de la instalación para Debian/Ubuntu.
+
+### Windows
+
+1. Descarga e instala Python desde [python.org](https://www.python.org/downloads/).
+
+2. Abre PowerShell y sigue estos pasos:
+   ```powershell
+   git clone https://github.com/panxos/Ping-Monitor.git
+   cd Ping-Monitor
+   python -m venv ping_monitor_env
+   .\ping_monitor_env\Scripts\Activate.ps1
+   pip install -r requirements.txt  # O requirements_basic.txt para la versión básica
+   ```
 
 ## 💻 Uso
+
+### Activar el entorno virtual (si no está activo):
+```bash
+source ping_monitor_env/bin/activate  # En Unix
+# O
+.\ping_monitor_env\Scripts\Activate.ps1  # En Windows PowerShell
+```
 
 ### Versión Básica
 ```bash
@@ -85,6 +167,12 @@ python ping-monitor-script-telegram.py [host] [opciones]
    python ping-monitor-script-telegram.py 8.8.8.8 --telegram_token YOUR_TOKEN --telegram_chat_id YOUR_CHAT_ID --save_config
    ```
 
+4. Uso después de guardar la configuración:
+   ```bash
+   python ping-monitor-script-telegram.py 8.8.8.8
+   ```
+   (No es necesario proporcionar el token y chat ID de Telegram si ya se guardaron previamente)
+
 ## 📄 Ejemplo de Salida de Log
 
 Cuando se usa la opción `--log`, el archivo de log tendrá un formato JSON similar a este:
@@ -111,15 +199,17 @@ Cuando se usa la opción `--log`, el archivo de log tendrá un formato JSON simi
 
 ## 🛠️ Solución de Problemas
 
-- **Error de módulo no encontrado**: Asegúrate de haber instalado todas las dependencias.
-- **Problemas de permisos**: Verifica que tienes permisos para ejecutar ping en tu sistema.
-- **Errores de Telegram**: Comprueba que el token y el chat ID son correctos.
+- **Error de módulo no encontrado**: Asegúrate de haber activado el entorno virtual y de haber instalado todas las dependencias.
+- **Problemas de permisos**: Verifica que tienes permisos para ejecutar ping en tu sistema. En algunos sistemas puede requerir privilegios de administrador.
+- **Errores de Telegram**: Comprueba que el token y el chat ID son correctos y que el bot tiene permisos para enviar mensajes.
+- **Problemas de conexión**: Asegúrate de tener una conexión a Internet activa y que no haya firewalls bloqueando las conexiones salientes.
 
 ## 📝 Notas Adicionales
 
 - Para detener el monitoreo, usa Ctrl+C.
 - La configuración se guarda cifrada para mayor seguridad.
-- Los logs en formato JSON facilitan la integración con herramientas de análisis.
+- Los logs en formato JSON facilitan la integración con herramientas de análisis como Grafana o ELK Stack.
+- En sistemas basados en Debian, es crucial usar el entorno virtual para evitar conflictos con los paquetes del sistema.
 
 ## 🤝 Contribuciones
 
